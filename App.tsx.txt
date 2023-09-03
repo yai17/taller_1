@@ -1,0 +1,177 @@
+# taller1
+ /**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
+
+import React, { useState } from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+  TextInput,
+  Button,
+  Alert,
+  
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+
+
+interface Cuenta {
+  nombre: string;
+  contraseña: string;
+}
+
+function App() {
+  const [cuentas, setCuentas] = useState<Cuenta[]>([]);
+  const [nombre, setNombre] = useState('');
+  const [contraseña, setContraseña] = useState('');
+  const [fecha, setFecha] = useState('');
+  const [horaInicio, setHoraInicio] = useState('');
+  const [periodo, setPeriodo] = useState('AM');
+  const [totalHorasTrabajadas, setTotalHorasTrabajadas] = useState(0);
+  const [sesionIniciada, setSesionIniciada] = useState(false); // Estado para controlar si la sesión ha iniciado
+
+
+  const Mayus = /[A-Z]/;
+  const Numeros = /[0-9]/;
+  const Caracter = /[#$%&@]/;
+
+
+  /* Función para obtener las cuentas
+  function getAccounts() {
+    return cuentas;
+  }*/
+
+  const Registrarse = () => {
+    if(contraseña.length<8){
+      Alert.alert('Error', 'La contraseña debe tener exactamente 8 caracteres');
+      return;
+    }else if(!Mayus.test(contraseña)){
+      Alert.alert('Error', 'La contraseña debe tener al menos una letra mayuscula');
+      return;
+    }else if(!Numeros.test(contraseña)){
+      Alert.alert('Error', 'La contraseña debe tener al menos un numero');
+      return;
+    }else if(!Caracter.test(contraseña)){
+      Alert.alert('Error', 'La contraseña debe tener al menos un caracter especial');
+      return;
+    };
+
+  };
+
+  const handleLogin = () => {
+    if (!nombre || !contraseña) {
+      Alert.alert('Error', 'Por favor, completa todos los campos.');
+      return;
+    }
+    
+
+   
+  };
+  const [horaSalida, setHoraSalida] = useState<number>(0);
+
+  const calcularTotalHoras = () => {
+    let nuevaHoraSalida = parseInt(horaInicio) + 8;
+
+    
+
+
+    
+  };
+
+  const registrarHoras = () => {
+    if (!fecha || !horaInicio) {
+      Alert.alert('Error', 'Por favor, completa todos los campos.');
+      return;
+    }
+
+    
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Guardar Nombre de Usuario y Contraseña</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Nombre de Usuario"
+        value={nombre}
+        onChangeText={(text) => setNombre(text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        value={contraseña}
+        onChangeText={(text) => setContraseña(text)}
+        secureTextEntry={true}
+      />
+      <Button title="Iniciar sesión" onPress={handleLogin} />
+      <Button title="Registrarse" onPress={Registrarse} />
+      <Text style={styles.header}>Registro de Horas</Text>
+      <TextInput
+        style={[styles.input, !sesionIniciada && styles.disabled]}
+        placeholder="Fecha"
+        value={fecha}
+        onChangeText={(text) => setFecha(text)}
+        editable={sesionIniciada}
+      />
+      <TextInput
+        style={[styles.input, !sesionIniciada && styles.disabled]}
+        placeholder="Hora de Inicio (24h)"
+        keyboardType="numeric"
+        value={horaInicio}
+        onChangeText={(text) => setHoraInicio(text)}
+        editable={sesionIniciada}
+      />
+      <Picker
+        selectedValue={periodo}
+        onValueChange={(itemValue) => setPeriodo(itemValue)}
+        enabled={sesionIniciada}
+      >
+        <Picker.Item label="AM" value="AM" />
+        <Picker.Item label="PM" value="PM" />
+      </Picker>
+      <Button title="Registrar Horas" onPress={registrarHoras} />
+      <Text style={styles.totalHours}>Total de horas trabajadas: {totalHorasTrabajadas}</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#f5f5f5',
+  },
+  header: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  input: {
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 8,
+    marginBottom: 12,
+    fontSize: 16,
+  },
+  disabled: {
+    backgroundColor: '#ddd',
+  },
+  totalHours: {
+    marginTop: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
+
+export default App;
+
